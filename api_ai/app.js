@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           addBotItem(speech, isDefaultIntent);
           ga('send', 'event', 'Message', 'add', 'bot');
           msg.addEventListener("end", function(ev) {
-            startListening();
+            // startListening();
           });
           msg.addEventListener("error", function(ev) {
             startListening();
