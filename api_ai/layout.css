@@ -171,6 +171,14 @@ html {
 
 @media screen and (min-width: 480px) and (min-height: 256px) {
   .app-container {
+@media only screen and (max-width: 480px) {
+
+.VlzXc {
+  width: 50% !important;
+}
+
+/*  .app-container {
+>>>>>>> 0e23f6bc2e2b09235904b7eeee3d3dd2496c51f7
     width: 480px;
     margin-left: auto;
     margin-right: auto;
@@ -194,5 +202,5 @@ html {
     border-bottom: 1px solid #E0E4E7;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-  }
+  }*/
 }
