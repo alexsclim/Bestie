@@ -112,9 +112,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function handleResponse(serverResponse) {
 
-      // Set a timer just in case. so if there was an error speaking or whatever, there will at least be a prompt to continue
-      var timer = window.setTimeout(function() { startListening(); }, 5000);
-
       const speech = serverResponse["result"]["fulfillment"]["speech"];
       var msg = new SpeechSynthesisUtterance(speech);
       msg.voice = voices[48];
@@ -131,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       });
 
       window.speechSynthesis.speak(msg);
+      recognition.end();
     }
     function handleError(serverError) {
       console.log("Error from api.ai server: ", serverError);
