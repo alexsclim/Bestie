@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function handleResponse(serverResponse) {
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
+      console.log(serverResponse);
       var msg = new SpeechSynthesisUtterance(speech);
       msg.voice = voices[48];
       msg.lang = "en-GB";
@@ -115,11 +116,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   var text = document.getElementById("textbox");
-  text.addEventListener("keyup", function(event) {
-    event.preventDefault();
+  text.addEventListener("keydown", (event) => {
+
     if (event.keyCode == 13) {
-      var inputValue = $('#textInput').val();
-      console.log(inputValue);
+      var inputValue = text.value;
+      event.preventDefault();
+      let promise = apiClient.textRequest(inputValue);
+      addUserItem(inputValue);
+      promise
+        .then((serverResponse) => {
+
+          const speech = serverResponse["result"]["fulfillment"]["speech"];
+          console.log(serverResponse);
+          var msg = new SpeechSynthesisUtterance(speech);
+          msg.voice = voices[48];
+          msg.lang = "en-GB";
+          addBotItem(speech);
+          ga('send', 'event', 'Message', 'add', 'bot');
+          msg.addEventListener("end", function(ev) {
+            window.clearTimeout(timer);
+            startListening();
+          });
+          msg.addEventListener("error", function(ev) {
+            window.clearTimeout(timer);
+            startListening();
+          });
+
+          window.speechSynthesis.speak(msg);
+          recognition.end();
+        }).catch(this.handleError);
+        text.value = "";
     }
   });
 
