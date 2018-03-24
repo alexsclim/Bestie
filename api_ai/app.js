@@ -58,11 +58,6 @@ function addError(text) {
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-  // test for relevant API-s
-  // for (let api of ['speechSynthesis', 'webkitSpeechSynthesis', 'speechRecognition', 'webkitSpeechRecognition']) {
-  //   console.log('api ' + api + " and if browser has it: " + (api in window));
-  // }
-
   displayCurrentTime();
 
   // check for Chrome
