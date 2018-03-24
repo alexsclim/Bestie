@@ -36,14 +36,14 @@ function addBotItem(text, isDefaultIntent, isCustomerRep) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
       + "Sorry, I don't have an answer to your question, would you like to speak with a customer service agent? "
-      + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
+      + "<a href='facetime-audio:alexsclim@gmail.com'>Call a customer service agent here</a>"
       + '</p></div></div>';
     appContent.scrollTop = appContent.scrollHeight;
   } else if (isCustomerRep) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
       + "You can reach a customer service representative at the link provided: "
-      + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
+      + "<a href='facetime-audio:alexsclim@gmail.com'>Call a customer service agent here</a>"
       + '</p></div></div>';
     appContent.scrollTop = appContent.scrollHeight;
   } else {
