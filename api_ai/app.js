@@ -110,6 +110,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     ev.preventDefault();
   });
 
+  var text = document.getElementById("textbox");
+  text.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+      var inputValue = $('#textInput').val();
+      console.log(inputValue);
+    }
+  });
+
   document.addEventListener("keydown", function(evt) {
     evt = evt || window.event;
     var isEscape = false;
