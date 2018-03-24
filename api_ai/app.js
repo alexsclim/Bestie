@@ -81,9 +81,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return;
   }
 
+  let voices = [];
+  window.speechSynthesis.onvoiceschanged = function() {
+    voices = window.speechSynthesis.getVoices();
+  };
+
+  // api.ai client
   const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
 
-  addBotItem("Hello, I'm Bestie! What can I help you with?");
+  // Initial feedback message.
+  addBotItem("Hi! I’m voicebot. Tap the microphone and start talking to me.");
 
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
@@ -110,6 +117,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
       var msg = new SpeechSynthesisUtterance(speech);
+      msg.voice = voices[48];
+      msg.lang = "en-GB";
       addBotItem(speech);
       ga('send', 'event', 'Message', 'add', 'bot');
       msg.addEventListener("end", function(ev) {
