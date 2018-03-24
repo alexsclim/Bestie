@@ -31,19 +31,32 @@ function gotoReadyState() {
   micReady.style.display = "block";
 }
 
-function addBotItem(text, isDefaultIntent, isCustomerRep) {
+function addBotItem(text, isDefaultIntent, isCustomerRep, isReturnPolicy, isPassword) {
   if (isDefaultIntent) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
       + "Sorry, I don't have an answer to your question, would you like to speak with a customer service agent? "
-      + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
+      + "<a href='facetime-audio:alexsclim@gmail.com'>Call a customer service agent here</a>"
       + '</p></div></div>';
     appContent.scrollTop = appContent.scrollHeight;
   } else if (isCustomerRep) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
       + "You can reach a customer service representative at the link provided: "
-      + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
+      + "<a href='facetime-audio:alexsclim@gmail.com'>Call a customer service agent here</a>"
+      + '</p></div></div>';
+    appContent.scrollTop = appContent.scrollHeight;
+  } else if (isReturnPolicy) {
+    const appContent = document.querySelector(".app-content");
+    appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
+      + "The return period and product condition varies for each product category: "
+      + "<a href='https://www.bestbuy.ca/en-CA/help/returns-and-exchanges-policy/hc1075.aspx' target='_blank'>please visit this link for more information</a>"
+      + '</p></div></div>';
+    appContent.scrollTop = appContent.scrollHeight;
+  } else if (isPassword) {
+    const appContent = document.querySelector(".app-content");
+    appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
+      + "<a href='https://www.bestbuy.ca/profile/resetpassword.aspx?' target='_blank'>Click this link to reset your password</a>"
       + '</p></div></div>';
     appContent.scrollTop = appContent.scrollHeight;
   } else {
@@ -67,7 +80,7 @@ function displayCurrentTime() {
 }
 
 function addError(text) {
-  addBotItem(text, false, false);
+  addBotItem(text, false, false, false, false);
   const footer = document.querySelector(".app-footer");
   footer.style.display = "none";
 }
@@ -85,9 +98,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   apiClient.apiLang = "en-GB";
 
   if (apiClient.apiLang = "en-GB") {
-    addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false, false);
+    addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false, false, false ,false);
   } else {
-    addBotItem("问我一个问题!", false, false);
+    addBotItem("问我一个问题!", false, false, false, false);
   }
 
   recognition = new webkitSpeechRecognition();
@@ -111,6 +124,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function handleResponse(serverResponse) {
       var isDefaultIntent = false;
       var isCustomerRep = false;
+      var isReturnPolicy = false;
+      var isPassword = false;
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
       msg = new SpeechSynthesisUtterance(speech);
@@ -125,8 +140,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
       isCustomerRep = serverResponse["result"]["metadata"]["intentName"] == "CustomerRep";
+      isReturnPolicy = serverResponse["result"]["metadata"]["intentName"] == "ReturnPolicy";
+      isPassword = serverResponse["result"]["metadata"]["intentName"] == "ForgotPassword";
 
-      addBotItem(speech, isDefaultIntent, isCustomerRep);
+      addBotItem(speech, isDefaultIntent, isCustomerRep, isReturnPolicy, isPassword);
       ga('send', 'event', 'Message', 'add', 'bot');
       msg.addEventListener("end", function(ev) {
       });
@@ -172,6 +189,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .then((serverResponse) => {
           var isDefaultIntent = false;
           var isCustomerRep = false;
+          var isReturnPolicy = false;
+          var isPassword = false;
 
           const speech = serverResponse["result"]["fulfillment"]["speech"];
           msg = new SpeechSynthesisUtterance(speech);
@@ -188,8 +207,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
           isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
           isCustomerRep = serverResponse["result"]["metadata"]["intentName"] == "CustomerRep";
+          isReturnPolicy = serverResponse["result"]["metadata"]["intentName"] == "ReturnPolicy";
+          isPassword = serverResponse["result"]["metadata"]["intentName"] == "ForgotPassword";
 
-          addBotItem(speech, isDefaultIntent, isCustomerRep);
+          addBotItem(speech, isDefaultIntent, isCustomerRep, isReturnPolicy, isPassword);
           ga('send', 'event', 'Message', 'add', 'bot');
           msg.addEventListener("end", function(ev) {
           });
