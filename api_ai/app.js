@@ -79,16 +79,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
       addBotItem(speech);
       ga('send', 'event', 'Message', 'add', 'bot');
       msg.addEventListener("end", function(ev) {
-        window.clearTimeout(timer);
-        startListening();
       });
       msg.addEventListener("error", function(ev) {
-        window.clearTimeout(timer);
         startListening();
       });
 
       window.speechSynthesis.speak(msg);
-      recognition.end();
     }
     function handleError(serverError) {
       console.log("Error from api.ai server: ", serverError);
@@ -114,8 +110,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     ev.preventDefault();
   });
 
-  // Esc key handler - cancel listening if pressed
-  // http://stackoverflow.com/questions/3369593/how-to-detect-escape-key-press-with-javascript-or-jquery
   document.addEventListener("keydown", function(evt) {
     evt = evt || window.event;
     var isEscape = false;
