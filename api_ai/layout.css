@@ -90,7 +90,7 @@ html {
 }
 
 .item p {
-  max-width: 256px;
+  max-width: 600px;
   margin: 0;
   padding-top: 6px;
 }
@@ -204,4 +204,9 @@ html {
   .VlzXc {
     width: 45% !important;
   }
+
+  .item p {
+    max-width: 256px;
+  }
+
 }

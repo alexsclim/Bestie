@@ -18,21 +18,21 @@ function addBotItem(text, isDefaultIntent) {
   if (isDefaultIntent) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
-      + "Do you want to speak to a customer service representative? "
-      + "<a href='tel:778-554-2978'>Reach a customer service representative here</a>"
+      + "Sorry, I don't have an answer to your question, would you like to speak to a customer service agent? "
+      + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
       + '</p></div></div>';
-    appContent.scrollTop = appContent.scrollHeight; // scroll to bottom
+    appContent.scrollTop = appContent.scrollHeight;
   } else {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>' + text + '</p></div></div>';
-    appContent.scrollTop = appContent.scrollHeight; // scroll to bottom
+    appContent.scrollTop = appContent.scrollHeight;
   }
 }
 
 function addUserItem(text) {
   const appContent = document.querySelector(".app-content");
   appContent.innerHTML += '<div class="item-container item-container-user"><div class="item"><p>' + text + '</p></div></div>';
-  appContent.scrollTop = appContent.scrollHeight; // scroll to bottom
+  appContent.scrollTop = appContent.scrollHeight;
 }
 
 function displayCurrentTime() {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
 
-  addBotItem("Hi! I'm Bestie! What can I help you with?", false);
+  addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false);
 
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       msg.voice = voices[48];
       msg.lang = "en-GB";
 
-      isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent";
+      isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
 
       addBotItem(speech, isDefaultIntent);
       ga('send', 'event', 'Message', 'add', 'bot');
@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           msg.voice = voices[48];
           msg.lang = "en-GB";
 
-          isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Feedback Intent";
+          isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
 
           addBotItem(speech, isDefaultIntent);
           ga('send', 'event', 'Message', 'add', 'bot');
