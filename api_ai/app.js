@@ -14,10 +14,19 @@ function gotoReadyState() {
   micReady.style.display = "block";
 }
 
-function addBotItem(text) {
-  const appContent = document.querySelector(".app-content");
-  appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>' + text + '</p></div></div>';
-  appContent.scrollTop = appContent.scrollHeight; // scroll to bottom
+function addBotItem(text, isDefaultIntent) {
+  if (isDefaultIntent) {
+    const appContent = document.querySelector(".app-content");
+    appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
+      + "Do you want to speak to a customer service representative? "
+      + "<a href='tel:778-554-2978'>Reach a customer service representative here</a>"
+      + '</p></div></div>';
+    appContent.scrollTop = appContent.scrollHeight; // scroll to bottom
+  } else {
+    const appContent = document.querySelector(".app-content");
+    appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>' + text + '</p></div></div>';
+    appContent.scrollTop = appContent.scrollHeight; // scroll to bottom
+  }
 }
 
 function addUserItem(text) {
@@ -34,7 +43,7 @@ function displayCurrentTime() {
 }
 
 function addError(text) {
-  addBotItem(text);
+  addBotItem(text, false);
   const footer = document.querySelector(".app-footer");
   footer.style.display = "none";
 }
@@ -50,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
 
-  addBotItem("Hi! I'm Bestie! What can I help you with?");
+  addBotItem("Hi! I'm Bestie! What can I help you with?", false);
 
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
@@ -71,13 +80,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .catch(handleError);
 
     function handleResponse(serverResponse) {
+      var isDefaultIntent = false;
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
-      console.log(serverResponse);
       var msg = new SpeechSynthesisUtterance(speech);
       msg.voice = voices[48];
       msg.lang = "en-GB";
-      addBotItem(speech);
+
+      isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent";
+
+      addBotItem(speech, isDefaultIntent);
       ga('send', 'event', 'Message', 'add', 'bot');
       msg.addEventListener("end", function(ev) {
       });
@@ -121,13 +133,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
       addUserItem(inputValue);
       promise
         .then((serverResponse) => {
+          var isDefaultIntent = false;
 
           const speech = serverResponse["result"]["fulfillment"]["speech"];
           console.log(serverResponse);
           var msg = new SpeechSynthesisUtterance(speech);
           msg.voice = voices[48];
           msg.lang = "en-GB";
-          addBotItem(speech);
+
+          isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Feedback Intent";
+
+          addBotItem(speech, isDefaultIntent);
           ga('send', 'event', 'Message', 'add', 'bot');
           msg.addEventListener("end", function(ev) {
             window.clearTimeout(timer);
