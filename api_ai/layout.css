@@ -17,13 +17,20 @@ html {
 }
 
 .app-header {
-  background-color: #3D4145;
-  height: 77px;
+  background-color: rgb(0, 59, 100);
+  height: 72px;
   color: #ffffff;
   flex-grow: 0;
   flex-shrink: 0;
   text-align: center;
   font-size: 24px;
+}
+
+.app-navbar {
+  padding: 8px 12px;
+  color: #fff;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .app-header > h1 {
@@ -145,6 +152,29 @@ html {
   display: none;
 }
 
+.nav-left-icons {
+  float: left;
+  margin-left: 22px;
+}
+
+.hamburger-icon {
+  position: absolute;
+  top: 23px;
+}
+
+.bestbuy-icon {
+  width: 56px !important;
+  height: 48px !important;
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.checkout-icon {
+  position: absolute;
+  left: 90%;
+  top: 25px;
+}
+
 @keyframes listeningframes {
   0%, 100% {
     opacity: 1;
@@ -169,8 +199,6 @@ html {
   animation: listeningframes 0.6s 0.4s infinite;
 }
 
-@media screen and (min-width: 480px) and (min-height: 256px) {
-  .app-container {
 @media only screen and (max-width: 480px) {
 
 .VlzXc {
@@ -178,23 +206,19 @@ html {
 }
 
 /*  .app-container {
->>>>>>> 0e23f6bc2e2b09235904b7eeee3d3dd2496c51f7
     width: 480px;
     margin-left: auto;
     margin-right: auto;
   }
-
   .app-content {
     border-left: 1px solid #E0E4E7;
     border-right: 1px solid #E0E4E7;
   }
-
   .app-header {
     margin-top: 16px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
-
   .app-footer {
     margin-bottom: 16px;
     border-left: 1px solid #E0E4E7;
