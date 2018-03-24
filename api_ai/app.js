@@ -31,11 +31,18 @@ function gotoReadyState() {
   micReady.style.display = "block";
 }
 
-function addBotItem(text, isDefaultIntent) {
+function addBotItem(text, isDefaultIntent, isCustomerRep) {
   if (isDefaultIntent) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
       + "Sorry, I don't have an answer to your question, would you like to speak with a customer service agent? "
+      + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
+      + '</p></div></div>';
+    appContent.scrollTop = appContent.scrollHeight;
+  } else if (isCustomerRep) {
+    const appContent = document.querySelector(".app-content");
+    appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
+      + "You can reach a customer service representative at the link provided: "
       + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
       + '</p></div></div>';
     appContent.scrollTop = appContent.scrollHeight;
@@ -60,7 +67,7 @@ function displayCurrentTime() {
 }
 
 function addError(text) {
-  addBotItem(text, false);
+  addBotItem(text, false, false);
   const footer = document.querySelector(".app-footer");
   footer.style.display = "none";
 }
@@ -78,9 +85,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   apiClient.apiLang = "en-GB";
 
   if (apiClient.apiLang = "en-GB") {
-    addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false);
+    addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false, false);
   } else {
-    addBotItem("问我一个问题!");
+    addBotItem("问我一个问题!", false, false);
   }
 
   recognition = new webkitSpeechRecognition();
@@ -104,6 +111,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     function handleResponse(serverResponse) {
       var isDefaultIntent = false;
+      var isCustomerRep = false;
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
       msg = new SpeechSynthesisUtterance(speech);
@@ -117,8 +125,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       }
 
       isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
+      isCustomerRep = serverResponse["result"]["metadata"]["intentName"] == "CustomerRep";
 
-      addBotItem(speech, isDefaultIntent);
+      addBotItem(speech, isDefaultIntent, isCustomerRep);
       ga('send', 'event', 'Message', 'add', 'bot');
       msg.addEventListener("end", function(ev) {
       });
@@ -163,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       promise
         .then((serverResponse) => {
           var isDefaultIntent = false;
+          var isCustomerRep = false;
 
           const speech = serverResponse["result"]["fulfillment"]["speech"];
           msg = new SpeechSynthesisUtterance(speech);
@@ -175,12 +185,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
             msg.lang = "en-GB";
           }
 
-          isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
+          console.log(serverResponse);
 
-          addBotItem(speech, isDefaultIntent);
+          isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
+          isCustomerRep = serverResponse["result"]["metadata"]["intentName"] == "CustomerRep";
+
+          addBotItem(speech, isDefaultIntent, isCustomerRep);
           ga('send', 'event', 'Message', 'add', 'bot');
           msg.addEventListener("end", function(ev) {
-            // startListening();
           });
           msg.addEventListener("error", function(ev) {
             startListening();
