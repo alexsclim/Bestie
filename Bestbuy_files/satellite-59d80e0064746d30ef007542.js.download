@@ -1,0 +1,18 @@
+_satellite.pushAsyncScript(function(event, target, $variables){
+  var rc = window.data_layer.user.regionCode;
+
+// init bluecore , then run triggerEvent code
+function categoryBluecore() {
+  var data = {category:[]};
+  for (var i = 1; i < window.data_layer.search.category.categoryBreadcrumb.length; i++) {
+    data.category.push(window.data_layer.search.category.categoryBreadcrumb[i].name);
+  }
+  triggermail.PartnerEvent.triggerEvent('categoryview', data);
+}
+
+if (typeof triggermail === 'object' && typeof triggermail.PartnerEvent !== 'undefined' && rc && 
+    (rc.toLowerCase() !== 'qc' && 
+     rc.toLowerCase() !== 'un')) {
+	categoryBluecore();
+}
+});
