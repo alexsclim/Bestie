@@ -147,6 +147,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     ev.preventDefault();
   });
 
+  var text = document.getElementById("textbox");
+  text.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+      var inputValue = $('#textInput').val();
+      console.log(inputValue);
+    }
+  });
+
   // Esc key handler - cancel listening if pressed
   // http://stackoverflow.com/questions/3369593/how-to-detect-escape-key-press-with-javascript-or-jquery
   document.addEventListener("keydown", function(evt) {
