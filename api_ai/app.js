@@ -58,39 +58,16 @@ function addError(text) {
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-  // test for relevant API-s
-  // for (let api of ['speechSynthesis', 'webkitSpeechSynthesis', 'speechRecognition', 'webkitSpeechRecognition']) {
-  //   console.log('api ' + api + " and if browser has it: " + (api in window));
-  // }
-
   displayCurrentTime();
-
-  // check for Chrome
-  if (!isChrome()) {
-    addError("This demo only works in Google Chrome.");
-    return;
-  }
-
-  if (!('speechSynthesis' in window)) {
-    addError("Your browser doesn’t support speech synthesis. This demo won’t work.");
-    return;
-  }
-
-  if (!('webkitSpeechRecognition' in window)) {
-    addError("Your browser cannot record voice. This demo won’t work.");
-    return;
-  }
 
   let voices = [];
   window.speechSynthesis.onvoiceschanged = function() {
     voices = window.speechSynthesis.getVoices();
   };
 
-  // api.ai client
   const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
 
-  // Initial feedback message.
-  addBotItem("Hi! I’m voicebot. Tap the microphone and start talking to me.");
+  addBotItem("Hi! I'm Bestie! What can I help you with?");
 
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
