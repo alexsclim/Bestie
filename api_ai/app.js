@@ -1,3 +1,17 @@
+let apiClient;
+let recognition;
+let msg;
+
+function changeLanguage() {
+  if (apiClient.apiLang == 'en-GB') {
+    apiClient.apiLang = 'zh-CN';
+    recognition.lang = 'zh-CN';
+  } else {
+    apiClient.apiLang = 'en-GB';
+    recognition.lang = 'en-GB';
+  }
+}
+
 function gotoListeningState() {
   const micListening = document.querySelector(".mic .listening");
   const micReady = document.querySelector(".mic .ready");
@@ -57,13 +71,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     voices = window.speechSynthesis.getVoices();
   };
 
-  const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
+  apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
+  apiClient.apiLang = "en-GB";
 
   addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false);
 
-  var recognition = new webkitSpeechRecognition();
+  recognition = new webkitSpeechRecognition();
   var recognizedText = null;
   recognition.continuous = false;
+  recognition.lang = 'en-GB';
   recognition.onstart = function() {
     recognizedText = null;
   };
@@ -84,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
       var msg = new SpeechSynthesisUtterance(speech);
-      msg.voice = voices[48];
+      msg.voice = voices[voices.length - 17];
       msg.lang = "en-GB";
 
       isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
@@ -136,9 +152,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           var isDefaultIntent = false;
 
           const speech = serverResponse["result"]["fulfillment"]["speech"];
-          console.log(serverResponse);
-          var msg = new SpeechSynthesisUtterance(speech);
-          msg.voice = voices[48];
+          msg = new SpeechSynthesisUtterance(speech);
+          msg.voice = voices[voices.length - 17];
           msg.lang = "en-GB";
 
           isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
@@ -146,11 +161,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
           addBotItem(speech, isDefaultIntent);
           ga('send', 'event', 'Message', 'add', 'bot');
           msg.addEventListener("end", function(ev) {
-            window.clearTimeout(timer);
             startListening();
           });
           msg.addEventListener("error", function(ev) {
-            window.clearTimeout(timer);
             startListening();
           });
 
