@@ -81,13 +81,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return;
   }
 
-  // Now we’ve established that the browser is Chrome with proper speech API-s.
+  const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
 
-  // api.ai client
-  const apiClient = new ApiAi.ApiAiClient({accessToken: '329dcb8e2a8f4876acbf7fb616978686'});
-
-  // Initial feedback message.
-  addBotItem("Hi! I’m voicebot. Tap the microphone and start talking to me.");
+  addBotItem("Hello, I'm Bestie! What can I help you with?");
 
   var recognition = new webkitSpeechRecognition();
   var recognizedText = null;
