@@ -10,6 +10,14 @@ html {
   height: 100%;
 }
 
+#language {
+  width: 94px;
+  position: absolute;
+  right: 15%;
+  bottom: 4%;
+  background-color: rgb(0, 59, 100);
+}
+
 .app-container {
   display: flex;
   flex-direction: column;

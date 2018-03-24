@@ -1,14 +1,17 @@
 let apiClient;
 let recognition;
-let msg;
 
 function changeLanguage() {
   if (apiClient.apiLang == 'en-GB') {
     apiClient.apiLang = 'zh-CN';
     recognition.lang = 'zh-CN';
+    document.getElementById("language").innerHTML = "English";
+    document.getElementById("textbox").placeholder = "问我一个问题!";
   } else {
     apiClient.apiLang = 'en-GB';
     recognition.lang = 'en-GB';
+    document.getElementById("language").innerHTML = "中文";
+    document.getElementById("textbox").placeholder = "Ask me a question!"
   }
 }
 
@@ -32,7 +35,7 @@ function addBotItem(text, isDefaultIntent) {
   if (isDefaultIntent) {
     const appContent = document.querySelector(".app-content");
     appContent.innerHTML += '<div class="item-container item-container-bot"><div class="item"><p>'
-      + "Sorry, I don't have an answer to your question, would you like to speak to a customer service agent? "
+      + "Sorry, I don't have an answer to your question, would you like to speak with a customer service agent? "
       + "<a href='tel:778-554-2978'>Call a customer service agent here</a>"
       + '</p></div></div>';
     appContent.scrollTop = appContent.scrollHeight;
@@ -74,7 +77,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
   apiClient.apiLang = "en-GB";
 
-  addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false);
+  if (apiClient.apiLang = "en-GB") {
+    addBotItem("Hi there! My name is Bestie, a virtual assistant tailored towards answering common questions about your Best Buy experience!", false);
+  } else {
+    addBotItem("问我一个问题!");
+  }
 
   recognition = new webkitSpeechRecognition();
   var recognizedText = null;
@@ -99,9 +106,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
       var isDefaultIntent = false;
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
-      var msg = new SpeechSynthesisUtterance(speech);
-      msg.voice = voices[voices.length - 17];
-      msg.lang = "en-GB";
+      msg = new SpeechSynthesisUtterance(speech);
+
+      if (apiClient.apiLang == 'zh-CN') {
+        msg.voice = voices[voices.length - 1];
+        msg.lang = "zh-CN";
+      } else {
+        msg.voice = voices[voices.length - 17];
+        msg.lang = "en-GB";
+      }
 
       isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
 
@@ -153,8 +166,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
           const speech = serverResponse["result"]["fulfillment"]["speech"];
           msg = new SpeechSynthesisUtterance(speech);
-          msg.voice = voices[voices.length - 17];
-          msg.lang = "en-GB";
+
+          if (apiClient.apiLang == 'zh-CN') {
+            msg.voice = voices[voices.length - 1];
+            msg.lang = "zh-CN";
+          } else {
+            msg.voice = voices[voices.length - 17];
+            msg.lang = "en-GB";
+          }
 
           isDefaultIntent = serverResponse["result"]["metadata"]["intentName"] == "Default Fallback Intent - fallback";
 
