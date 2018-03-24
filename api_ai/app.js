@@ -81,10 +81,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return;
   }
 
-  // Now we’ve established that the browser is Chrome with proper speech API-s.
+  let voices = [];
+  window.speechSynthesis.onvoiceschanged = function() {
+    voices = window.speechSynthesis.getVoices();
+  };
 
   // api.ai client
-  const apiClient = new ApiAi.ApiAiClient({accessToken: '329dcb8e2a8f4876acbf7fb616978686'});
+  const apiClient = new ApiAi.ApiAiClient({accessToken: '0a7ff9ab6ee1454e9e720dc8f58e0604'});
 
   // Initial feedback message.
   addBotItem("Hi! I’m voicebot. Tap the microphone and start talking to me.");
@@ -114,6 +117,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       const speech = serverResponse["result"]["fulfillment"]["speech"];
       var msg = new SpeechSynthesisUtterance(speech);
+      msg.voice = voices[48];
+      msg.lang = "en-GB";
       addBotItem(speech);
       ga('send', 'event', 'Message', 'add', 'bot');
       msg.addEventListener("end", function(ev) {
